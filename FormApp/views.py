@@ -3,6 +3,7 @@ from . import forms
 from .models import Students
 from django.core.files.storage import FileSystemStorage
 import os
+from django.forms import modelformset_factory
 # Create your views here.
 
 
@@ -65,5 +66,16 @@ def delete_student(request, id):
     return render(
         request, 'form_app/delete_student.html', context={
         'delete_form': delete_form
+        }
+    )
+
+def insert_multiple_students(request):
+    StudentFormSet = modelformset_factory(Students, fields='__all__', extra=3)
+    insert_form = StudentFormSet(request.POST or None, request.FILES or None)
+    if insert_form.is_valid():
+        insert_form.save()
+    return render(
+        request, 'form_app/insert_multiple_students.html', context={
+        'insert_form': insert_form
         }
     )
