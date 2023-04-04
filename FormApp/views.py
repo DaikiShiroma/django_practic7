@@ -23,3 +23,19 @@ def students_list(request):
             "students":students
         }
     )
+
+def update_student(request,id):
+    student = Students.objects.get(id=id)
+    update_form = forms.StudentUpdateForm(
+        initial = {
+            'name': student.name, 'age': student.age, 'grade': student.grade, 'picture': student.picture
+        }
+    )
+    if request.method == 'POST':
+        pass
+    return render(
+        request, 'form_app/update_student.html',context={
+        'update_form': update_form,
+        'student':student
+        }
+    )
